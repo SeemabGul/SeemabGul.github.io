@@ -1,164 +1,1289 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seemab Gul | Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#070709" />
+  <title>SmartPark — Parking Management</title>
+  <!-- Layout-fixed single-file edition -->
+  <style>
+:root {
+  --bg: #060608;
+  --bg-soft: #0b0b0f;
+  --panel: rgba(16, 16, 21, 0.88);
+  --panel-solid: #111116;
+  --panel-2: #15151b;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.14);
+  --text: #f8f8fa;
+  --muted: #9a9aa7;
+  --muted-2: #696975;
+  --red: #ff3548;
+  --red-dark: #8f0e1d;
+  --red-soft: rgba(255, 53, 72, 0.14);
+  --green: #77f18d;
+  --gold: #f4bf57;
+  --purple: #ad8cff;
+  --shadow: 0 28px 80px rgba(0,0,0,.42);
+  --radius-xl: 28px;
+  --radius-lg: 22px;
+  --radius-md: 15px;
+  --sidebar: 258px;
+  --transition: 220ms ease;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 76% 8%, rgba(136, 4, 20, .17), transparent 27%),
+    radial-gradient(circle at 15% 95%, rgba(111, 0, 17, .14), transparent 33%),
+    var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow-x: hidden;
+}
+button, input, select { font: inherit; }
+button { color: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+.hidden { display: none !important; }
+.noise {
+  position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: .025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+
+/* Shared */
+.brand { display:flex; align-items:center; gap:12px; color:var(--text); text-decoration:none; }
+.brand-mark {
+  width:42px; height:46px; display:grid; place-items:center; position:relative;
+  background: linear-gradient(145deg, #ff5465, #a20718); clip-path: polygon(50% 0, 92% 23%, 92% 76%, 50% 100%, 8% 76%, 8% 23%);
+  filter: drop-shadow(0 8px 18px rgba(255,53,72,.23));
+}
+.brand-mark::after { content:""; position:absolute; inset:3px; background:#0b0b0e; clip-path:inherit; }
+.brand-mark span { position:relative; z-index:1; font-weight:900; font-size:20px; }
+.brand-copy { display:flex; flex-direction:column; line-height:1; }
+.brand-copy strong, .auth-mobile-brand strong { font-size:20px; letter-spacing:-.7px; }
+.brand-copy strong span, .auth-mobile-brand strong span { color:var(--red); }
+.brand-copy small { color:var(--muted-2); margin-top:5px; font-size:11px; letter-spacing:1.6px; text-transform:uppercase; }
+.glass-card { background:rgba(13,13,17,.76); border:1px solid var(--line); box-shadow:var(--shadow); backdrop-filter: blur(26px); }
+.eyebrow { display:flex; align-items:center; gap:10px; margin:0 0 18px; font-size:12px; color:#c5c5cd; letter-spacing:2px; text-transform:uppercase; }
+.eyebrow span { width:34px; height:2px; border-radius:3px; background:linear-gradient(90deg,var(--red),transparent); }
+.primary-button, .secondary-button {
+  min-height:48px; border-radius:13px; padding:0 20px; border:1px solid transparent; font-weight:700; transition:var(--transition); display:inline-flex; align-items:center; justify-content:center; gap:9px;
+}
+.primary-button { background:linear-gradient(135deg,#ff3548,#970d1e); box-shadow:0 14px 35px rgba(255,53,72,.2); }
+.primary-button:hover { transform:translateY(-2px); box-shadow:0 18px 42px rgba(255,53,72,.31); }
+.secondary-button { background:#15151a; border-color:var(--line-strong); }
+.secondary-button:hover { background:#1c1c22; border-color:rgba(255,53,72,.45); }
+.full-button { width:100%; }
+.text-button { border:0; background:transparent; color:#d1d1d8; font-size:13px; padding:5px; }
+.text-button:hover { color:var(--red); }
+
+/* Authentication */
+.auth-view { min-height:100vh; display:grid; grid-template-columns:minmax(0,1.2fr) minmax(420px,.8fr); position:relative; overflow:hidden; }
+.auth-orb { position:absolute; border-radius:50%; filter:blur(4px); pointer-events:none; }
+.auth-orb-one { width:540px; height:540px; left:-220px; top:-260px; background:radial-gradient(circle,rgba(255,53,72,.13),transparent 68%); }
+.auth-orb-two { width:420px; height:420px; right:-190px; bottom:-190px; background:radial-gradient(circle,rgba(136,0,18,.19),transparent 70%); }
+.auth-showcase { min-height:100vh; padding:44px 5vw 38px; display:flex; flex-direction:column; position:relative; border-right:1px solid var(--line); overflow:hidden; }
+.brand-large .brand-mark { width:46px; height:51px; }
+.brand-large .brand-copy strong { font-size:23px; }
+.showcase-copy { margin-top:clamp(65px,10vh,130px); max-width:740px; position:relative; z-index:4; }
+.showcase-copy h1 { margin:0; font-size:clamp(52px,6vw,92px); line-height:.98; letter-spacing:-5px; max-width:850px; }
+.showcase-copy h1 em { font-style:normal; color:var(--red); text-shadow:0 0 45px rgba(255,53,72,.17); }
+.showcase-copy > p:last-child { max-width:600px; color:#a8a8b3; font-size:17px; line-height:1.75; margin-top:28px; }
+.showcase-visual { margin-top:auto; height:310px; position:relative; border:1px solid var(--line); border-radius:28px; overflow:hidden; background:linear-gradient(180deg,#0d0d12,#08080b); box-shadow:inset 0 1px rgba(255,255,255,.04); }
+.road-grid { position:absolute; inset:0; background:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px); background-size:42px 42px; transform:perspective(500px) rotateX(58deg) scale(1.45) translateY(20px); transform-origin:center bottom; opacity:.45; }
+.showcase-slot { position:absolute; top:38px; width:112px; height:155px; border:2px solid rgba(255,255,255,.17); border-top:0; display:flex; justify-content:center; align-items:center; }
+.showcase-slot:nth-of-type(2){ right:48px; }
+.showcase-slot:nth-of-type(3){ right:184px; }
+.showcase-slot:nth-of-type(4){ right:320px; }
+.showcase-slot > span { position:absolute; top:-25px; color:#777784; font-size:12px; font-weight:800; }
+.showcase-slot.available { border-color:rgba(119,241,141,.64); box-shadow:inset 0 -20px 60px rgba(119,241,141,.08),0 0 35px rgba(119,241,141,.08); }
+.showcase-slot.available b { color:var(--green); font-size:36px; }
+.mini-car, .showcase-car, .animated-car .car-body, .hero-car { border-radius:22px 22px 16px 16px; background:linear-gradient(90deg,#111217,#3f414b 48%,#111217); box-shadow:0 18px 35px rgba(0,0,0,.44); }
+.mini-car { width:42px; height:82px; }
+.mini-car::before, .showcase-car::before, .hero-car::before, .car-body::before { content:""; position:absolute; background:linear-gradient(#252833,#090a0d); border-radius:8px; }
+.mini-car { position:relative; }
+.mini-car::before { inset:14px 6px 30px; }
+.mini-car.red { background:linear-gradient(90deg,#590713,#d62035 50%,#590713); }
+.showcase-car { position:absolute; width:82px; height:152px; left:20%; bottom:12px; transform:rotate(-68deg); animation:showcaseDrive 5.2s ease-in-out infinite; }
+.showcase-car::before { inset:23px 11px 56px; }
+.showcase-car::after { content:""; position:absolute; inset:auto 10px 8px; height:4px; background:var(--red); box-shadow:0 0 16px var(--red); border-radius:20px; }
+.route-glow { position:absolute; left:30%; bottom:80px; width:48%; height:120px; border-bottom:2px dashed rgba(255,53,72,.66); border-radius:50%; transform:rotate(-12deg); filter:drop-shadow(0 0 8px rgba(255,53,72,.6)); }
+@keyframes showcaseDrive { 0%,100%{transform:translate(0,0) rotate(-68deg)} 50%{transform:translate(80px,-25px) rotate(-58deg)} }
+.auth-proof { display:flex; gap:44px; padding-top:28px; }
+.auth-proof div { display:flex; flex-direction:column; }
+.auth-proof strong { font-size:15px; }
+.auth-proof span { color:var(--muted-2); margin-top:5px; font-size:12px; }
+.auth-panel-wrap { display:flex; flex-direction:column; justify-content:center; align-items:center; padding:40px; position:relative; z-index:2; }
+.auth-panel { width:min(100%,520px); border-radius:30px; padding:30px; }
+.auth-mobile-brand { display:none; }
+.auth-tabs { display:grid; grid-template-columns:1fr 1fr; padding:5px; background:#09090c; border:1px solid var(--line); border-radius:14px; margin-bottom:30px; }
+.auth-tab { border:0; background:transparent; color:#777784; border-radius:10px; padding:11px 13px; font-weight:700; transition:var(--transition); }
+.auth-tab.active { background:#1a1a20; color:var(--text); box-shadow:inset 0 1px rgba(255,255,255,.04); }
+.auth-form { display:none; }
+.auth-form.active { display:block; animation:fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(7px)} to{opacity:1;transform:none} }
+.form-heading p, .modal-head p, .panel-heading p { margin:0 0 6px; color:var(--red); font-size:11px; font-weight:800; letter-spacing:1.7px; text-transform:uppercase; }
+.form-heading h2 { margin:0 0 27px; font-size:28px; letter-spacing:-1px; }
+.field { display:flex; flex-direction:column; gap:8px; margin-bottom:17px; }
+.field > span:first-child { color:#b7b7c0; font-size:12px; font-weight:700; }
+.input-shell { min-height:50px; display:flex; align-items:center; gap:10px; background:#09090c; border:1px solid var(--line); border-radius:12px; padding:0 13px; transition:var(--transition); }
+.input-shell:focus-within { border-color:rgba(255,53,72,.6); box-shadow:0 0 0 4px rgba(255,53,72,.08); }
+.input-shell svg { width:19px; height:19px; fill:none; stroke:#73737e; stroke-width:1.6; }
+.input-shell input, .input-shell select { width:100%; background:transparent; border:0; outline:0; color:var(--text); min-width:0; }
+.input-shell input::placeholder { color:#555560; }
+.input-shell select option { background:#111116; color:#fff; }
+.password-toggle { border:0; background:transparent; color:#7f7f89; font-size:11px; font-weight:700; }
+.password-toggle:hover { color:#fff; }
+.field-error { min-height:0; color:#ff7886; font-size:11px; }
+.field.has-error .input-shell { border-color:#c3283a; }
+.field-pair { display:grid; grid-template-columns:1fr 1fr; gap:13px; }
+.form-row { display:flex; justify-content:space-between; align-items:center; margin:2px 0 22px; }
+.check-label { display:flex; align-items:center; gap:9px; color:#8d8d97; font-size:12px; cursor:pointer; }
+.check-label input { position:absolute; opacity:0; }
+.check-label > span { width:17px; height:17px; border:1px solid var(--line-strong); border-radius:5px; position:relative; }
+.check-label input:checked + span { background:var(--red); border-color:var(--red); }
+.check-label input:checked + span::after { content:"✓"; position:absolute; inset:0; display:grid; place-items:center; color:white; font-size:11px; font-weight:900; }
+.terms { margin:0 0 20px; }
+.auth-form .primary-button svg { width:18px; fill:none; stroke:#fff; stroke-width:2; }
+.form-message { min-height:18px; margin:13px 0 0; text-align:center; font-size:12px; color:#ff8a96; }
+.form-message.success { color:var(--green); }
+.auth-footer { color:#5f5f69; font-size:11px; margin:18px 0 0; }
+
+/* App shell */
+.app-view { min-height:100vh; display:block; width:100%; }
+.sidebar { position:fixed; left:0; top:0; bottom:0; width:var(--sidebar); border-right:1px solid var(--line); padding:28px 20px 22px; background:rgba(8,8,11,.92); backdrop-filter:blur(22px); display:flex; flex-direction:column; justify-content:space-between; z-index:50; }
+.side-nav { display:flex; flex-direction:column; gap:7px; margin-top:48px; }
+.nav-item { position:relative; width:100%; min-height:48px; display:grid; grid-template-columns:34px 1fr auto; align-items:center; border:1px solid transparent; background:transparent; color:#878792; border-radius:13px; text-align:left; padding:0 12px; font-size:13px; font-weight:700; transition:var(--transition); }
+.nav-item:hover { background:rgba(255,255,255,.035); color:#d8d8df; }
+.nav-item.active { background:linear-gradient(90deg,rgba(255,53,72,.14),rgba(255,53,72,.035)); border-color:rgba(255,53,72,.18); color:#fff; }
+.nav-item.active::before { content:""; position:absolute; left:0; width:3px; height:24px; border-radius:0 10px 10px 0; background:var(--red); box-shadow:0 0 16px rgba(255,53,72,.55); }
+.nav-icon { width:26px; height:26px; display:grid; place-items:center; border:1px solid var(--line); border-radius:8px; font-size:13px; }
+.nav-badge { min-width:24px; height:22px; display:grid; place-items:center; padding:0 6px; border-radius:20px; background:rgba(119,241,141,.1); color:var(--green); font-size:10px; }
+.nav-badge.warning { background:rgba(244,191,87,.1); color:var(--gold); }
+.sidebar-bottom { display:flex; flex-direction:column; gap:13px; }
+.capacity-widget { border:1px solid var(--line); border-radius:16px; padding:13px; background:#0d0d11; display:flex; align-items:center; gap:12px; }
+.capacity-ring { width:46px; height:46px; border-radius:50%; display:grid; place-items:center; background:conic-gradient(var(--red) var(--capacity,0%),#222229 0); position:relative; }
+.capacity-ring::after { content:""; position:absolute; inset:5px; background:#0d0d11; border-radius:50%; }
+.capacity-ring span { position:relative; z-index:1; font-size:10px; font-weight:800; }
+.capacity-widget small { color:#777782; font-size:10px; }
+.capacity-widget strong { display:block; margin-top:4px; font-size:11px; }
+.logout-button { min-height:43px; border:1px solid var(--line); border-radius:12px; background:transparent; color:#81818b; text-align:left; padding:0 14px; }
+.logout-button:hover { color:#fff; border-color:rgba(255,53,72,.34); background:rgba(255,53,72,.06); }
+.main-content { margin-left:var(--sidebar); width:calc(100% - var(--sidebar)); min-width:0; }
+.topbar { height:91px; display:flex; align-items:center; justify-content:space-between; padding:0 34px; border-bottom:1px solid var(--line); background:rgba(6,6,8,.72); backdrop-filter:blur(18px); position:sticky; top:0; z-index:30; }
+.menu-button { display:none; border:0; background:transparent; font-size:22px; }
+.page-title p { margin:0 0 6px; color:#72727d; font-size:11px; }
+.page-title h2 { margin:0; font-size:19px; letter-spacing:-.5px; }
+.top-actions { display:flex; align-items:center; gap:9px; }
+.icon-button { width:42px; height:42px; border:1px solid var(--line); border-radius:12px; background:#0d0d11; color:#bbbcc4; font-size:19px; }
+.icon-button:hover { border-color:rgba(255,53,72,.35); color:#fff; }
+.notification-button { position:relative; }
+.notification-button span { position:absolute; width:7px; height:7px; background:var(--red); border-radius:50%; top:9px; right:9px; box-shadow:0 0 0 3px #0d0d11; }
+.profile-button { min-height:48px; display:flex; align-items:center; gap:10px; border:1px solid var(--line); border-radius:14px; background:#0d0d11; padding:6px 10px 6px 7px; }
+.profile-button > span:first-child { width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg,#5c0814,#ff3548); display:grid; place-items:center; font-weight:900; font-size:12px; }
+.profile-copy { display:flex; flex-direction:column; align-items:flex-start; min-width:118px; }
+.profile-copy strong { font-size:12px; }
+.profile-copy small { color:#777782; font-size:10px; margin-top:3px; }
+.profile-menu { position:fixed; top:82px; right:30px; width:240px; border-radius:16px; padding:15px; z-index:100; }
+.profile-menu p { margin:0; display:flex; flex-direction:column; }
+.profile-menu small { color:#777782; margin-top:5px; }
+.profile-menu button { width:100%; margin-top:15px; min-height:38px; border:1px solid var(--line); background:#111116; border-radius:10px; }
+.content-section { display:none; width:100%; padding:32px 34px 50px; }
+.content-section.active { display:block; animation:sectionIn .34s ease; }
+@keyframes sectionIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+/* Dashboard */
+.hero-card { min-height:330px; border-radius:var(--radius-xl); border:1px solid var(--line); background:linear-gradient(110deg,#15151b 0%,#0d0d12 52%,#08080b 100%); position:relative; overflow:hidden; display:grid; grid-template-columns:minmax(340px,.8fr) minmax(420px,1.2fr); box-shadow:var(--shadow); }
+.hero-card::before { content:""; position:absolute; width:440px; height:440px; right:12%; top:-210px; border-radius:50%; background:radial-gradient(circle,rgba(255,53,72,.16),transparent 68%); }
+.hero-copy { padding:52px 50px; position:relative; z-index:3; }
+.hero-copy h1 { margin:0; font-size:clamp(42px,4vw,64px); line-height:1.02; letter-spacing:-3.5px; }
+.hero-copy h1 em { color:var(--red); font-style:normal; }
+.hero-copy > p:last-of-type { max-width:560px; color:#93939e; line-height:1.7; font-size:14px; margin:22px 0 28px; }
+.hero-actions { display:flex; gap:10px; }
+.hero-art { position:relative; min-height:330px; overflow:hidden; }
+.hero-road { position:absolute; width:110%; height:190%; left:-5%; top:10%; background:linear-gradient(145deg,transparent 44%,rgba(255,255,255,.03) 44%,rgba(255,255,255,.03) 44.6%,transparent 44.6%),linear-gradient(90deg,#0b0b0f,#16161b); transform:rotate(-9deg); border-left:1px solid rgba(255,255,255,.05); }
+.hero-road::after { content:""; position:absolute; left:48%; top:0; width:2px; height:100%; background:repeating-linear-gradient(to bottom,rgba(255,255,255,.35) 0 18px,transparent 18px 37px); }
+.hero-light { position:absolute; width:300px; height:300px; border-radius:50%; right:18%; top:12%; background:radial-gradient(circle,rgba(255,53,72,.17),transparent 68%); }
+.hero-car { position:absolute; width:104px; height:188px; left:25%; bottom:34px; transform:rotate(-57deg); background:linear-gradient(90deg,#08090b,#343741 48%,#08090b); animation:heroCruise 4.8s ease-in-out infinite; }
+.hero-car::before { inset:27px 13px 68px; }
+.hero-car::after { content:""; position:absolute; bottom:10px; left:11px; right:11px; height:4px; border-radius:10px; background:var(--red); box-shadow:0 0 22px var(--red); }
+.hero-car span { position:absolute; width:110px; height:2px; background:linear-gradient(90deg,rgba(255,53,72,.7),transparent); left:-100px; bottom:17px; box-shadow:0 0 12px rgba(255,53,72,.5); }
+@keyframes heroCruise { 0%,100%{transform:translate(0,0) rotate(-57deg)} 50%{transform:translate(54px,-18px) rotate(-51deg)} }
+.hero-slot { position:absolute; right:15%; top:38px; width:142px; height:202px; border:2px solid rgba(119,241,141,.65); border-top:0; box-shadow:inset 0 -45px 80px rgba(119,241,141,.08),0 0 32px rgba(119,241,141,.08); transform:skewY(-4deg); display:grid; place-items:center; }
+.hero-slot small { position:absolute; top:-25px; color:var(--green); font-size:10px; font-weight:900; letter-spacing:1px; }
+.hero-slot strong { font-size:48px; color:var(--green); opacity:.9; }
+.hero-dots { position:absolute; left:43%; top:42%; display:flex; gap:13px; transform:rotate(-21deg); }
+.hero-dots i { width:8px; height:8px; border-radius:50%; background:var(--red); box-shadow:0 0 14px var(--red); animation:pulseDot 1.5s infinite; }
+.hero-dots i:nth-child(2){animation-delay:.15s}.hero-dots i:nth-child(3){animation-delay:.3s}.hero-dots i:nth-child(4){animation-delay:.45s}.hero-dots i:nth-child(5){animation-delay:.6s}
+@keyframes pulseDot { 0%,100%{opacity:.25;transform:scale(.7)} 50%{opacity:1;transform:scale(1)} }
+.hero-status { position:absolute; right:24px; bottom:20px; min-width:190px; display:flex; gap:10px; align-items:center; padding:12px 14px; border:1px solid var(--line); border-radius:13px; background:rgba(7,7,10,.78); backdrop-filter:blur(12px); }
+.status-light { width:9px; height:9px; border-radius:50%; background:var(--green); box-shadow:0 0 16px rgba(119,241,141,.7); }
+.hero-status small { display:block; color:#6f6f79; font-size:9px; text-transform:uppercase; letter-spacing:1px; }
+.hero-status strong { display:block; font-size:11px; margin-top:3px; }
+.stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:18px 0; }
+.stat-card { min-height:145px; border:1px solid var(--line); border-radius:var(--radius-lg); background:var(--panel); padding:20px; display:grid; grid-template-columns:auto 1fr; grid-template-rows:auto 33px; gap:0 14px; box-shadow:inset 0 1px rgba(255,255,255,.025); }
+.stat-icon { width:45px; height:45px; border-radius:14px; display:grid; place-items:center; font-weight:900; }
+.available-icon{background:rgba(119,241,141,.09);color:var(--green);border:1px solid rgba(119,241,141,.15)}
+.occupied-icon{background:var(--red-soft);color:var(--red);border:1px solid rgba(255,53,72,.16)}
+.queue-icon{background:rgba(244,191,87,.09);color:var(--gold);border:1px solid rgba(244,191,87,.15)}
+.revenue-icon{background:rgba(173,140,255,.09);color:var(--purple);border:1px solid rgba(173,140,255,.15)}
+.stat-copy small { color:#8b8b96; font-size:11px; }
+.stat-copy strong { display:block; font-size:27px; margin:5px 0 2px; letter-spacing:-1px; }
+.stat-copy span { color:#62626c; font-size:10px; }
+.mini-chart { grid-column:1/-1; display:flex; align-items:flex-end; gap:5px; padding-top:12px; opacity:.7; }
+.mini-chart i { flex:1; border-radius:8px 8px 2px 2px; height:var(--h,30%); }
+.mini-chart i:nth-child(1){--h:28%}.mini-chart i:nth-child(2){--h:54%}.mini-chart i:nth-child(3){--h:39%}.mini-chart i:nth-child(4){--h:73%}.mini-chart i:nth-child(5){--h:48%}.mini-chart i:nth-child(6){--h:89%}.mini-chart i:nth-child(7){--h:61%}
+.green-chart i{background:linear-gradient(var(--green),rgba(119,241,141,.08))}.red-chart i{background:linear-gradient(var(--red),rgba(255,53,72,.08))}.gold-chart i{background:linear-gradient(var(--gold),rgba(244,191,87,.08))}.purple-chart i{background:linear-gradient(var(--purple),rgba(173,140,255,.08))}
+.dashboard-grid { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(310px,.45fr); gap:18px; }
+.panel { border:1px solid var(--line); border-radius:var(--radius-lg); background:var(--panel); box-shadow:inset 0 1px rgba(255,255,255,.025); }
+.parking-panel { padding:21px; min-width:0; }
+.panel-heading { display:flex; align-items:center; justify-content:space-between; gap:18px; }
+.panel-heading h3 { margin:0; font-size:18px; letter-spacing:-.5px; }
+.legend { display:flex; flex-wrap:wrap; gap:15px; color:#797984; font-size:10px; }
+.legend span { display:flex; align-items:center; gap:6px; }
+.legend i { width:7px; height:7px; border-radius:50%; }
+.available-dot{background:var(--green);box-shadow:0 0 8px rgba(119,241,141,.4)}.occupied-dot{background:var(--red);box-shadow:0 0 8px rgba(255,53,72,.4)}.reserved-dot{background:var(--gold);box-shadow:0 0 8px rgba(244,191,87,.4)}
+.parking-lot { position:relative; margin-top:18px; height:390px; border-radius:18px; overflow:hidden; background:linear-gradient(160deg,#0b0c10,#111218 52%,#090a0d); border:1px solid rgba(255,255,255,.055); }
+.parking-lot::before { content:""; position:absolute; inset:0; background:radial-gradient(circle at 45% 78%,rgba(255,53,72,.06),transparent 35%),linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px); background-size:auto,30px 30px,30px 30px; }
+.lot-topline { position:absolute; left:17px; right:17px; top:13px; display:flex; justify-content:space-between; color:#5f6069; font-size:8px; letter-spacing:1.4px; }
+.slots-grid { position:absolute; inset:44px 56px 112px; display:grid; grid-template-columns:repeat(6,1fr); gap:12px; }
+.parking-slot { position:relative; border:1.5px solid rgba(255,255,255,.18); border-top:0; border-radius:0 0 6px 6px; min-width:0; display:flex; align-items:center; justify-content:center; transition:var(--transition); overflow:visible; }
+.parking-slot::before { content:""; position:absolute; left:-2px; top:-1px; width:2px; height:18px; background:rgba(255,255,255,.18); box-shadow:calc(100% + var(--slotWidth,100px)) 0 rgba(255,255,255,.18); }
+.parking-slot .slot-label { position:absolute; top:-24px; font-size:9px; font-weight:900; color:#777883; letter-spacing:.7px; }
+.parking-slot.available { border-color:rgba(119,241,141,.32); background:linear-gradient(180deg,transparent,rgba(119,241,141,.04)); }
+.parking-slot.available::after { content:"P"; color:rgba(119,241,141,.38); font-size:25px; font-weight:900; }
+.parking-slot.reserved { border-color:rgba(244,191,87,.32); background:linear-gradient(180deg,transparent,rgba(244,191,87,.04)); }
+.parking-slot.reserved::after { content:"R"; color:rgba(244,191,87,.42); font-size:23px; font-weight:900; }
+.parking-slot.occupied { border-color:rgba(255,53,72,.33); background:linear-gradient(180deg,transparent,rgba(255,53,72,.045)); }
+.slot-car { width:43px; height:82px; position:relative; border-radius:15px 15px 11px 11px; background:linear-gradient(90deg,#08090b,var(--carColor,#3d3f49) 47%,#08090b); filter:drop-shadow(0 12px 12px rgba(0,0,0,.55)); }
+.slot-car::before { content:""; position:absolute; inset:13px 6px 30px; border-radius:7px; background:linear-gradient(#292c35,#08090c); }
+.slot-car::after { content:""; position:absolute; left:6px; right:6px; bottom:6px; height:3px; background:var(--red); box-shadow:0 0 9px var(--red); border-radius:6px; }
+.slot-car span { position:absolute; bottom:-22px; font-size:7px; color:#888994; white-space:nowrap; left:50%; transform:translateX(-50%); }
+.drive-lane { position:absolute; left:38px; right:38px; height:70px; bottom:25px; border-top:1px solid rgba(255,255,255,.06); border-bottom:1px solid rgba(255,255,255,.06); display:flex; align-items:center; justify-content:space-evenly; }
+.drive-lane span { width:27px; height:2px; background:rgba(255,255,255,.18); transform:rotate(-18deg); }
+.entry-gate, .exit-gate { position:absolute; bottom:39px; width:28px; height:44px; border:1px solid var(--line); border-radius:7px; background:#15161b; display:flex; align-items:flex-end; justify-content:center; }
+.entry-gate{left:11px}.exit-gate{right:11px}.entry-gate i,.exit-gate i{position:absolute; width:42px; height:3px; background:#fff; top:8px; transform-origin:left center; transform:rotate(-20deg)}.exit-gate i{right:14px;transform-origin:right center;transform:rotate(20deg)}.entry-gate b,.exit-gate b{font-size:7px;color:#777883;margin-bottom:5px}
+.animated-car { position:absolute; width:52px; height:94px; left:22px; bottom:12px; z-index:20; opacity:0; pointer-events:none; transform-origin:center; }
+.car-body { width:100%; height:100%; position:relative; background:linear-gradient(90deg,#07080a,#343640 48%,#07080a); }
+.car-body::before { inset:15px 7px 34px; }
+.car-body::after { content:""; position:absolute; left:7px; right:7px; bottom:7px; height:3px; background:var(--red); box-shadow:0 0 11px var(--red); border-radius:6px; }
+.car-body i { position:absolute; width:7px; height:17px; background:#050507; border-radius:5px; top:18px; }
+.car-body i:first-child{left:-4px}.car-body i:nth-child(2){right:-4px}.car-body span{position:absolute;left:7px;right:7px;top:8px;height:3px;background:#f1f1f2;opacity:.75;border-radius:5px;box-shadow:0 0 8px rgba(255,255,255,.6)}
+.activity-panel { padding:21px; }
+.activity-list { margin-top:17px; display:flex; flex-direction:column; gap:4px; max-height:390px; overflow:auto; padding-right:4px; }
+.activity-item { display:grid; grid-template-columns:35px 1fr auto; gap:10px; padding:12px 8px; border-bottom:1px solid rgba(255,255,255,.045); align-items:center; }
+.activity-item:last-child { border-bottom:0; }
+.activity-symbol { width:34px; height:34px; border-radius:11px; display:grid; place-items:center; background:rgba(255,53,72,.08); color:var(--red); font-size:13px; }
+.activity-item strong { font-size:11px; display:block; }
+.activity-item p { margin:4px 0 0; color:#74747f; font-size:9px; line-height:1.4; }
+.activity-item time { color:#5f5f69; font-size:8px; white-space:nowrap; }
+.empty-state { padding:35px 15px; text-align:center; color:#62626d; font-size:12px; }
+.queue-empty { grid-column:1/-1; min-height:300px; display:grid; place-items:center; align-content:center; gap:10px; padding:44px 20px; text-align:center; border:1px dashed rgba(255,255,255,.1); border-radius:20px; background:radial-gradient(circle at 50% 15%,rgba(255,53,72,.09),transparent 38%),#0c0c10; }
+.queue-empty-icon { width:64px; height:64px; display:grid; place-items:center; border-radius:20px; color:var(--red); font-size:29px; border:1px solid rgba(255,53,72,.22); background:rgba(255,53,72,.08); box-shadow:0 18px 45px rgba(255,53,72,.1); }
+.queue-empty h3 { margin:7px 0 0; font-size:20px; }
+.queue-empty p { max-width:520px; margin:0; color:#777782; line-height:1.7; font-size:12px; }
+.bottom-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:18px; }
+.compact-panel { padding:21px; min-height:215px; }
+.queue-preview { margin-top:15px; display:flex; flex-direction:column; gap:9px; }
+.queue-row { display:grid; grid-template-columns:33px 1fr auto; align-items:center; gap:11px; padding:10px 12px; background:#0d0d11; border:1px solid rgba(255,255,255,.045); border-radius:12px; }
+.queue-number { width:29px; height:29px; border-radius:9px; display:grid; place-items:center; background:rgba(244,191,87,.09); color:var(--gold); font-weight:800; font-size:11px; }
+.queue-row strong { font-size:11px; }
+.queue-row span { display:block; color:#686873; font-size:9px; margin-top:3px; }
+.queue-row time { color:#676771; font-size:9px; }
+.quick-search { display:flex; gap:9px; margin-top:18px; }
+.quick-search input, .table-search input { min-width:0; flex:1; border:1px solid var(--line); background:#0a0a0d; color:#fff; border-radius:12px; padding:0 13px; outline:0; }
+.quick-search input { min-height:44px; }
+.quick-search button { border:0; border-radius:11px; background:linear-gradient(135deg,#ff3548,#8f0e1d); padding:0 18px; font-weight:800; }
+.quick-search-result { margin-top:12px; border:1px solid var(--line); border-radius:12px; min-height:83px; padding:12px; font-size:11px; color:#a5a5ae; }
+.quick-search-result.empty { display:grid; place-items:center; color:#585862; }
+.vehicle-result { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.vehicle-result div { background:#0c0c10; border-radius:9px; padding:8px; }
+.vehicle-result small { color:#5f5f68; display:block; font-size:8px; text-transform:uppercase; letter-spacing:.8px; }
+.vehicle-result strong { display:block; font-size:10px; margin-top:4px; }
+
+/* Other sections */
+.section-banner { min-height:190px; border:1px solid var(--line); border-radius:var(--radius-xl); background:linear-gradient(110deg,#15151a,#0a0a0e); padding:35px 38px; display:flex; justify-content:space-between; align-items:center; position:relative; overflow:hidden; margin-bottom:18px; }
+.section-banner::after { content:""; position:absolute; width:340px; height:340px; right:7%; top:-190px; border-radius:50%; background:radial-gradient(circle,rgba(255,53,72,.18),transparent 65%); }
+.section-banner h1 { margin:0; font-size:40px; letter-spacing:-2px; }
+.section-banner > div > p:last-child { color:#898994; margin:12px 0 0; }
+.section-banner button { position:relative; z-index:2; }
+.full-panel { padding:23px; }
+.parking-lot-large { height:590px; margin-top:17px; }
+.parking-lot-large .slots-grid { inset:56px 70px 150px; gap:18px; }
+.parking-lot-large .slot-car { width:55px; height:103px; }
+.parking-lot-large .drive-lane { height:95px; bottom:35px; }
+.records-toolbar { display:flex; justify-content:space-between; gap:12px; margin-bottom:18px; }
+.table-search { width:min(430px,100%); height:44px; display:flex; align-items:center; gap:9px; border:1px solid var(--line); border-radius:12px; padding:0 12px; background:#0a0a0d; }
+.table-search input { border:0; padding:0; }
+.records-toolbar select { background:#0d0d11; color:#aaaab3; border:1px solid var(--line); border-radius:12px; padding:0 13px; outline:0; }
+.table-wrap { overflow:auto; }
+table { width:100%; border-collapse:collapse; min-width:760px; }
+th { color:#65656f; text-transform:uppercase; letter-spacing:1.2px; font-size:9px; text-align:left; padding:14px 12px; border-bottom:1px solid var(--line); }
+td { padding:15px 12px; border-bottom:1px solid rgba(255,255,255,.045); font-size:11px; color:#b6b6be; }
+td strong { color:#f2f2f4; }
+.table-vehicle { display:flex; align-items:center; gap:9px; }
+.table-car-icon { width:34px; height:34px; border-radius:10px; display:grid; place-items:center; background:var(--red-soft); color:var(--red); }
+.status-pill { display:inline-flex; padding:6px 9px; border-radius:20px; font-size:9px; font-weight:800; }
+.status-pill.active { background:rgba(119,241,141,.09); color:var(--green); }
+.status-pill.completed { background:rgba(255,255,255,.06); color:#868690; }
+.row-action { border:1px solid var(--line); background:#0e0e12; color:#aaaab3; border-radius:8px; padding:6px 9px; }
+.queue-full-list { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.queue-card { display:grid; grid-template-columns:45px 1fr auto; gap:13px; align-items:center; padding:17px; border:1px solid var(--line); border-radius:15px; background:#0c0c10; }
+.queue-card .queue-number { width:42px; height:42px; border-radius:12px; }
+.queue-card h4 { margin:0; font-size:13px; }
+.queue-card p { margin:5px 0 0; color:#6d6d77; font-size:10px; }
+.queue-card time { color:#686872; font-size:9px; }
+.history-timeline { display:flex; flex-direction:column; }
+.history-entry { display:grid; grid-template-columns:110px 36px 1fr; gap:15px; min-height:82px; }
+.history-entry > time { color:#666670; font-size:9px; padding-top:10px; }
+.timeline-mark { display:flex; flex-direction:column; align-items:center; }
+.timeline-mark i { width:14px; height:14px; border-radius:50%; background:var(--red); box-shadow:0 0 0 5px rgba(255,53,72,.09); margin-top:8px; }
+.timeline-mark::after { content:""; width:1px; flex:1; background:var(--line); margin-top:8px; }
+.history-entry:last-child .timeline-mark::after { display:none; }
+.history-entry h4 { margin:5px 0 0; font-size:12px; }
+.history-entry p { margin:6px 0 0; color:#777781; font-size:10px; }
+
+/* Modals and toast */
+.modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.72); backdrop-filter:blur(9px); z-index:200; }
+.modal { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); z-index:210; width:min(560px,calc(100vw - 28px)); max-height:90vh; overflow:auto; border:1px solid var(--line-strong); background:#101015; border-radius:24px; box-shadow:0 35px 120px rgba(0,0,0,.7); padding:25px; }
+.modal-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:23px; }
+.modal-head h2 { margin:0; font-size:24px; letter-spacing:-1px; }
+.modal-close { width:36px; height:36px; border-radius:10px; border:1px solid var(--line); background:#17171c; font-size:20px; }
+.modal-close:hover { border-color:rgba(255,53,72,.35); }
+.modal-note { display:flex; gap:10px; align-items:flex-start; border:1px solid rgba(255,53,72,.12); background:rgba(255,53,72,.05); border-radius:12px; padding:12px; margin:4px 0 18px; }
+.modal-note span { color:var(--red); }
+.modal-note p { margin:0; color:#888893; font-size:11px; line-height:1.5; }
+.exit-preview, .search-result-card { min-height:120px; border:1px solid var(--line); border-radius:14px; background:#0b0b0e; padding:14px; margin:3px 0 18px; }
+.exit-preview.empty, .search-result-card.empty { display:grid; place-items:center; color:#5d5d67; font-size:11px; text-align:center; }
+.exit-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+.exit-grid div { background:#111116; border-radius:10px; padding:10px; }
+.exit-grid small { color:#62626c; font-size:8px; text-transform:uppercase; }
+.exit-grid strong { display:block; margin-top:4px; font-size:11px; }
+.toast-container { position:fixed; right:20px; bottom:20px; z-index:400; display:flex; flex-direction:column; gap:9px; }
+.toast { width:min(360px,calc(100vw - 40px)); display:grid; grid-template-columns:35px 1fr auto; gap:10px; align-items:center; padding:13px 14px; border:1px solid var(--line-strong); border-radius:14px; background:rgba(16,16,21,.96); box-shadow:0 18px 45px rgba(0,0,0,.45); animation:toastIn .3s ease; }
+.toast-icon { width:34px; height:34px; border-radius:10px; display:grid; place-items:center; background:var(--red-soft); color:var(--red); }
+.toast.success .toast-icon { background:rgba(119,241,141,.09); color:var(--green); }
+.toast strong { font-size:11px; }
+.toast p { margin:4px 0 0; color:#777781; font-size:9px; }
+.toast button { border:0; background:transparent; color:#777781; }
+@keyframes toastIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+
+/* Responsive */
+@media (max-width:1180px){
+  :root{--sidebar:220px}.hero-card{grid-template-columns:1fr 1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.dashboard-grid{grid-template-columns:1fr}.activity-list{max-height:300px}.auth-view{grid-template-columns:1fr 460px}.showcase-copy h1{font-size:62px}.showcase-slot:nth-of-type(4){display:none}
+}
+@media (max-width:920px){
+  .auth-view{display:block}.auth-showcase{display:none}.auth-panel-wrap{min-height:100vh;padding:20px}.auth-panel{padding:24px}.auth-mobile-brand{display:flex;align-items:center;gap:10px;margin-bottom:24px}.sidebar{transform:translateX(-100%);transition:var(--transition);width:260px}.sidebar.open{transform:none}.main-content{margin-left:0;width:100%}.menu-button{display:block}.topbar{padding:0 20px}.profile-copy{display:none}.profile-button{padding-right:8px}.content-section{padding:22px 20px 40px}.hero-card{grid-template-columns:1fr;min-height:540px}.hero-copy{padding:40px 34px}.hero-art{min-height:260px}.hero-status{bottom:12px}.bottom-grid{grid-template-columns:1fr}.section-banner{padding:28px;}.parking-lot-large{height:500px}.queue-full-list{grid-template-columns:1fr}
+}
+@media (max-width:650px){
+  .top-actions .icon-button{display:none}.content-section{padding:16px 12px 30px}.topbar{height:76px;padding:0 13px}.hero-card{border-radius:22px}.hero-copy{padding:30px 24px}.hero-copy h1{font-size:40px;letter-spacing:-2.2px}.hero-art{min-height:240px}.hero-slot{right:8%;width:110px;height:160px}.hero-car{width:79px;height:145px}.stats-grid{grid-template-columns:1fr 1fr;gap:10px}.stat-card{padding:15px;grid-template-columns:auto 1fr}.stat-icon{width:38px;height:38px}.stat-copy strong{font-size:22px}.dashboard-grid,.bottom-grid{gap:12px}.panel,.compact-panel{border-radius:18px}.parking-panel,.activity-panel,.compact-panel,.full-panel{padding:15px}.panel-heading{align-items:flex-start}.legend{gap:8px}.parking-lot{height:360px}.slots-grid{inset:46px 38px 120px;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:27px 10px}.parking-slot:nth-child(n+7){display:none}.parking-lot-large .slots-grid{inset:48px 40px 140px;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr)}.parking-lot-large .parking-slot:nth-child(n+7){display:flex}.parking-lot-large{height:650px}.slot-car{width:36px;height:69px}.section-banner{min-height:230px;display:block;padding:26px 22px}.section-banner h1{font-size:34px}.section-banner button{margin-top:25px}.records-toolbar{display:block}.records-toolbar select{height:44px;margin-top:9px;width:100%}.field-pair{grid-template-columns:1fr}.form-row{align-items:flex-start;gap:10px}.auth-panel{border-radius:22px}.showcase-copy h1{letter-spacing:-3px}.modal{padding:20px}.profile-menu{right:12px}.stats-grid{grid-template-columns:1fr}.stat-card{min-height:125px}
+}
+
+</style>
 </head>
-
 <body>
+  <div class="noise"></div>
 
-    <!-- Navigation -->
-    <nav>
-        <h2>Seemab Gul</h2>
+  <!-- AUTHENTICATION -->
+  <section id="authView" class="auth-view" aria-label="Authentication">
+    <div class="auth-orb auth-orb-one"></div>
+    <div class="auth-orb auth-orb-two"></div>
 
-        <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#skills">Skills</a>
-            <a href="#projects">Projects</a>
-            <a href="#education">Education</a>
-            <a href="#contact">Contact</a>
+    <div class="auth-showcase">
+      <a class="brand brand-large" href="#" aria-label="SmartPark home">
+        <span class="brand-mark"><span>P</span></span>
+        <span class="brand-copy"><strong>Smart<span>Park</span></strong><small>Parking, refined.</small></span>
+      </a>
+
+      <div class="showcase-copy">
+        <p class="eyebrow"><span></span> Intelligent parking control</p>
+        <h1>Arrive. Park.<br><em>Move effortlessly.</em></h1>
+        <p>One elegant space to manage vehicles, live slots, waiting cars, parking history and charges.</p>
+      </div>
+
+      <div class="showcase-visual" aria-hidden="true">
+        <div class="road-grid"></div>
+        <div class="showcase-slot available"><span>A3</span><b>P</b></div>
+        <div class="showcase-slot"><span>A2</span><div class="mini-car red"></div></div>
+        <div class="showcase-slot"><span>A1</span><div class="mini-car black"></div></div>
+        <div class="showcase-car"></div>
+        <div class="route-glow"></div>
+      </div>
+
+      <div class="auth-proof">
+        <div><strong>Live</strong><span>slot visibility</span></div>
+        <div><strong>Fast</strong><span>vehicle search</span></div>
+        <div><strong>Clear</strong><span>entry history</span></div>
+      </div>
+    </div>
+
+    <div class="auth-panel-wrap">
+      <div class="auth-panel glass-card">
+        <div class="auth-mobile-brand">
+          <span class="brand-mark"><span>P</span></span>
+          <strong>Smart<span>Park</span></strong>
         </div>
-    </nav>
 
-    <!-- Home -->
-    <section id="home" class="hero">
-        <div>
-            <img src="profile.png" alt="Seemab Gul" class="profile-img">
-            <p class="intro">Hi, I'm</p>
-            <h1>Seemab Gul</h1>
-
-            <h2>Software Engineering Student</h2>
-
-            <p>
-                Aspiring Software Developer interested in
-                web development, programming and problem-solving.
-            </p>
-
-          <div class="buttons">
-
-    <a href="#projects" class="btn">View My Projects</a>
-
-    <a href="https://github.com/SeemabGul"
-       target="_blank"
-       class="btn secondary-btn">
-        GitHub
-    </a>
-
-    <a href="https://www.fiverr.com/words_by_seenab"
-       target="_blank"
-       class="btn secondary-btn">
-        Fiverr
-    </a>
-
-</div>
+        <div class="auth-tabs" role="tablist">
+          <button class="auth-tab active" data-auth-tab="login" type="button">Sign in</button>
+          <button class="auth-tab" data-auth-tab="register" type="button">Create account</button>
         </div>
-    </section>
 
-    <!-- About -->
-    <section id="about">
-        <h2>About Me</h2>
+        <form id="loginForm" class="auth-form active" novalidate>
+          <div class="form-heading">
+            <p>Welcome back</p>
+            <h2>Sign in to continue</h2>
+          </div>
 
-        <p>
-            Hi, I'm Seemab Gul, a Software Engineering student currently
-            in my 3rd semester at STMU Islamabad. I'm interested in
-            software development, web technologies, and problem-solving.
-            I'm currently learning and improving my skills in HTML, CSS,
-            C, JavaScript, Java, and Python. I enjoy working on practical
-            projects and exploring new technologies to strengthen my
-            programming and development skills.
-        </p>
-    </section>
+          <label class="field">
+            <span>Email address</span>
+            <span class="input-shell">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></svg>
+              <input id="loginEmail" type="email" autocomplete="email" placeholder="you@example.com" required />
+            </span>
+            <small class="field-error"></small>
+          </label>
 
-    <!-- Skills -->
-    <section id="skills">
-        <h2>My Skills</h2>
+          <label class="field">
+            <span>Password</span>
+            <span class="input-shell">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0110 0v2M5 10h14v10H5z"/></svg>
+              <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter password" required />
+              <button class="password-toggle" type="button" data-toggle-password="loginPassword" aria-label="Show password">Show</button>
+            </span>
+            <small class="field-error"></small>
+          </label>
 
-        <div class="skills-container">
-            <span>HTML</span>
-            <span>CSS</span>
-            <span>C++</span>
-            <span>JavaScript</span>
-            <span>Java</span>
-            <span>Python</span>
-            <span>SEO</span>
+          <div class="form-row">
+            <label class="check-label"><input id="rememberMe" type="checkbox" /><span></span>Remember me</label>
+            <button id="forgotPassword" class="text-button" type="button">Forgot password?</button>
+          </div>
+
+          <button class="primary-button full-button" type="submit">
+            <span>Sign in</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <p id="loginMessage" class="form-message" aria-live="polite"></p>
+        </form>
+
+        <form id="registerForm" class="auth-form" novalidate>
+          <div class="form-heading">
+            <p>New administrator</p>
+            <h2>Create your account</h2>
+          </div>
+
+          <div class="field-pair">
+            <label class="field">
+              <span>First name</span>
+              <span class="input-shell"><input id="firstName" type="text" placeholder="First name" required /></span>
+              <small class="field-error"></small>
+            </label>
+            <label class="field">
+              <span>Last name</span>
+              <span class="input-shell"><input id="lastName" type="text" placeholder="Last name" required /></span>
+              <small class="field-error"></small>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Email address</span>
+            <span class="input-shell">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></svg>
+              <input id="registerEmail" type="email" placeholder="you@example.com" required />
+            </span>
+            <small class="field-error"></small>
+          </label>
+
+          <label class="field">
+            <span>Password</span>
+            <span class="input-shell">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0110 0v2M5 10h14v10H5z"/></svg>
+              <input id="registerPassword" type="password" placeholder="Minimum 8 characters" required />
+              <button class="password-toggle" type="button" data-toggle-password="registerPassword">Show</button>
+            </span>
+            <small class="field-error"></small>
+          </label>
+
+          <label class="field">
+            <span>Confirm password</span>
+            <span class="input-shell"><input id="confirmPassword" type="password" placeholder="Repeat password" required /></span>
+            <small class="field-error"></small>
+          </label>
+
+          <label class="check-label terms"><input id="agreeTerms" type="checkbox" /><span></span>I agree to the account terms.</label>
+
+          <button class="primary-button full-button" type="submit">
+            <span>Create account</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <p id="registerMessage" class="form-message" aria-live="polite"></p>
+        </form>
+      </div>
+      <p class="auth-footer">Secure access for authorised parking staff.</p>
+    </div>
+  </section>
+
+  <!-- APPLICATION -->
+  <div id="appView" class="app-view hidden">
+    <aside class="sidebar">
+      <div>
+        <a class="brand" href="#dashboard">
+          <span class="brand-mark"><span>P</span></span>
+          <span class="brand-copy"><strong>Smart<span>Park</span></strong><small>Management</small></span>
+        </a>
+
+        <nav class="side-nav" aria-label="Primary navigation">
+          <button class="nav-item active" data-section="dashboard"><span class="nav-icon">⌂</span><span>Dashboard</span></button>
+          <button class="nav-item" data-section="parking"><span class="nav-icon">P</span><span>Live Parking</span><span class="nav-badge" id="sidebarAvailable">0</span></button>
+          <button class="nav-item" data-section="records"><span class="nav-icon">≡</span><span>Vehicle Records</span></button>
+          <button class="nav-item" data-section="queue"><span class="nav-icon">↗</span><span>Waiting Queue</span><span class="nav-badge warning" id="sidebarQueue">0</span></button>
+          <button class="nav-item" data-section="reports"><span class="nav-icon">⌁</span><span>Activity</span></button>
+        </nav>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="capacity-widget">
+          <div class="capacity-ring"><span id="capacityPercent">0%</span></div>
+          <div><small>Parking usage</small><strong id="capacityText">0 of 12 occupied</strong></div>
         </div>
-    </section>
+        <button id="logoutButton" class="logout-button"><span>↪</span> Sign out</button>
+      </div>
+    </aside>
 
-    <!-- Projects -->
-    <section id="projects">
-        <h2>My Projects</h2>
+    <main class="main-content">
+      <header class="topbar">
+        <button id="menuButton" class="menu-button" type="button" aria-label="Open menu">☰</button>
+        <div class="page-title">
+          <p id="todayDate">Today</p>
+          <h2 id="sectionTitle">Parking overview</h2>
+        </div>
+        <div class="top-actions">
+          <button id="globalSearchButton" class="icon-button" title="Search vehicle">⌕</button>
+          <button class="icon-button notification-button" title="Notifications">♢<span></span></button>
+          <button id="profileButton" class="profile-button">
+            <span id="profileInitials">SP</span>
+            <span class="profile-copy"><strong id="profileName">Administrator</strong><small>Parking manager</small></span>
+            <span>⌄</span>
+          </button>
+        </div>
+      </header>
 
-        <div class="project-container">
+      <div id="profileMenu" class="profile-menu glass-card hidden">
+        <p><strong id="profileMenuName">Administrator</strong><small id="profileMenuEmail">admin@smartpark.com</small></p>
+        <button id="profileLogout">Sign out</button>
+      </div>
 
-            <div class="project-card">
-                <h3>Smart Parking Management System</h3>
-                <p>
-                    A system designed to manage parking slots,
-                    occupied vehicles and waiting cars using
-                    data structures.
-                </p>
-                <a href="https://github.com/SeemabGul"
-                   target="_blank"
-                   class="project-btn">
-                    View Project
-                 </a>
+      <section id="dashboardSection" class="content-section active">
+        <div class="hero-card">
+          <div class="hero-copy">
+            <p class="eyebrow"><span></span> Live parking command</p>
+            <h1>Every arrival,<br><em>perfectly placed.</em></h1>
+            <p>Track capacity, assign the nearest available slot and keep every vehicle movement beautifully organised.</p>
+            <div class="hero-actions">
+              <button class="primary-button" data-open-modal="parkModal">Park a vehicle</button>
+              <button class="secondary-button" data-open-modal="exitModal">Exit a vehicle</button>
+            </div>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="hero-road"></div>
+            <div class="hero-light"></div>
+            <div class="hero-car"><span></span></div>
+            <div class="hero-slot"><small>AVAILABLE</small><strong>P</strong></div>
+            <div class="hero-dots"><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="hero-status">
+            <span class="status-light"></span>
+            <div><small>System status</small><strong>Ready for arrivals</strong></div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-icon available-icon">P</div>
+            <div class="stat-copy"><small>Available spaces</small><strong id="availableCount">0</strong><span>Ready to assign</span></div>
+            <div class="mini-chart green-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon occupied-icon">◆</div>
+            <div class="stat-copy"><small>Occupied spaces</small><strong id="occupiedCount">0</strong><span id="occupancyLabel">0% occupancy</span></div>
+            <div class="mini-chart red-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon queue-icon">↗</div>
+            <div class="stat-copy"><small>Waiting vehicles</small><strong id="queueCount">0</strong><span>First in, first served</span></div>
+            <div class="mini-chart gold-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon revenue-icon">₨</div>
+            <div class="stat-copy"><small>Today's collection</small><strong id="revenueCount">Rs 0</strong><span>From completed stays</span></div>
+            <div class="mini-chart purple-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="panel parking-panel">
+            <div class="panel-heading">
+              <div><p>Live map</p><h3>Parking floor</h3></div>
+              <div class="legend"><span><i class="available-dot"></i>Available</span><span><i class="occupied-dot"></i>Occupied</span><span><i class="reserved-dot"></i>Reserved</span></div>
             </div>
 
-            <div class="project-card">
-                <h3>Smart Food Recommendation System</h3>
-                <p>
-                    A project focused on recommending food based
-                    on user preferences.
-                </p>
-                <a href="https://github.com/SeemabGul"
-                   target="_blank"
-                   class="project-btn">
-                   View Project
-                </a>
+            <div id="parkingLot" class="parking-lot">
+              <div class="lot-topline"><span>ENTRY</span><span>SMART PARKING • LEVEL 01</span><span>EXIT</span></div>
+              <div id="slotsGrid" class="slots-grid"></div>
+              <div class="drive-lane"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="entry-gate"><i></i><b>IN</b></div>
+              <div class="exit-gate"><i></i><b>OUT</b></div>
+              <div id="animatedCar" class="animated-car" aria-hidden="true"><div class="car-body"><i></i><i></i><span></span></div></div>
             </div>
+          </section>
 
-            <div class="project-card">
-                <h3>More Projects Coming Soon</h3>
-                <p>
-                    More of my academic and personal projects
-                    will be added here.
-                </p>
+          <aside class="panel activity-panel">
+            <div class="panel-heading">
+              <div><p>Live updates</p><h3>Recent activity</h3></div>
+              <button id="clearActivity" class="text-button">Clear</button>
             </div>
-
+            <div id="activityList" class="activity-list"></div>
+          </aside>
         </div>
-    </section>
 
-    <!-- Education -->
-    <section id="education">
-        <h2>Education</h2>
-
-        <div class="education-card">
-            <h3>BS Software Engineering</h3>
-            <p>STMU Islamabad</p>
-            <p>Currently in 3rd Semester</p>
+        <div class="bottom-grid">
+          <section class="panel compact-panel">
+            <div class="panel-heading"><div><p>Next arrivals</p><h3>Waiting queue</h3></div><button class="text-button" data-section-jump="queue">View all</button></div>
+            <div id="queuePreview" class="queue-preview"></div>
+          </section>
+          <section class="panel compact-panel">
+            <div class="panel-heading"><div><p>Quick lookup</p><h3>Find a vehicle</h3></div></div>
+            <form id="quickSearchForm" class="quick-search"><input id="quickSearchInput" placeholder="Enter registration number" /><button>Search</button></form>
+            <div id="quickSearchResult" class="quick-search-result empty">Search to view vehicle details.</div>
+          </section>
         </div>
-    </section>
+      </section>
 
-    <!-- Contact -->
-    <section id="contact">
-        <h2>Contact Me</h2>
+      <section id="parkingSection" class="content-section">
+        <div class="section-banner">
+          <div><p class="eyebrow"><span></span> Floor control</p><h1>Live parking map</h1><p>See every space, vehicle and movement in real time.</p></div>
+          <button class="primary-button" data-open-modal="parkModal">Park a vehicle</button>
+        </div>
+        <section class="panel full-panel">
+          <div class="panel-heading"><div><p>Level 01</p><h3>All parking spaces</h3></div><div class="legend"><span><i class="available-dot"></i>Available</span><span><i class="occupied-dot"></i>Occupied</span><span><i class="reserved-dot"></i>Reserved</span></div></div>
+          <div id="parkingLotLarge" class="parking-lot parking-lot-large"><div id="slotsGridLarge" class="slots-grid"></div><div class="drive-lane"><span></span><span></span><span></span><span></span><span></span></div><div id="animatedCarLarge" class="animated-car"><div class="car-body"><i></i><i></i><span></span></div></div></div>
+        </section>
+      </section>
 
-        <p>Email: <strong>gulseemab75@gmail.com</strong></p>
+      <section id="recordsSection" class="content-section">
+        <div class="section-banner"><div><p class="eyebrow"><span></span> Vehicle directory</p><h1>Parking records</h1><p>Search, review and manage currently parked vehicles.</p></div><button class="primary-button" data-open-modal="parkModal">Add vehicle</button></div>
+        <section class="panel full-panel">
+          <div class="records-toolbar"><div class="table-search"><span>⌕</span><input id="recordsSearch" placeholder="Search by registration or owner" /></div><select id="recordsFilter"><option value="all">All records</option><option value="active">Currently parked</option><option value="completed">Completed stays</option></select></div>
+          <div class="table-wrap"><table><thead><tr><th>Vehicle</th><th>Owner</th><th>Slot</th><th>Entry</th><th>Status</th><th>Fee</th><th></th></tr></thead><tbody id="recordsTableBody"></tbody></table></div>
+        </section>
+      </section>
 
-        <p>
-            I'm always interested in learning, building
-            and exploring new opportunities.
-        </p>
-    </section>
+      <section id="queueSection" class="content-section">
+        <div class="section-banner"><div><p class="eyebrow"><span></span> Arrival flow</p><h1>Waiting queue</h1><p>Vehicles are handled in the same order they arrive.</p></div></div>
+        <section class="panel full-panel"><div id="queueFullList" class="queue-full-list"></div></section>
+      </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>© 2026 Seemab Gul. All Rights Reserved.</p>
-    </footer>
+      <section id="reportsSection" class="content-section">
+        <div class="section-banner"><div><p class="eyebrow"><span></span> Complete timeline</p><h1>Activity history</h1><p>A clear record of entries, exits, allocations and waiting vehicles.</p></div><button id="downloadReport" class="secondary-button">Download CSV</button></div>
+        <section class="panel full-panel"><div id="historyTimeline" class="history-timeline"></div></section>
+      </section>
+    </main>
+  </div>
 
+  <!-- MODALS -->
+  <div id="modalBackdrop" class="modal-backdrop hidden"></div>
+
+  <section id="parkModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="parkModalTitle">
+    <div class="modal-head"><div><p>New arrival</p><h2 id="parkModalTitle">Park a vehicle</h2></div><button class="modal-close" type="button">×</button></div>
+    <form id="parkForm" class="modal-form">
+      <label class="field"><span>Registration number</span><span class="input-shell"><input id="parkPlate" placeholder="e.g. ISB-2026-01" maxlength="16" required /></span></label>
+      <div class="field-pair">
+        <label class="field"><span>Owner name</span><span class="input-shell"><input id="parkOwner" placeholder="Full name" required /></span></label>
+        <label class="field"><span>Vehicle model</span><span class="input-shell"><input id="parkModel" placeholder="e.g. Honda Civic" required /></span></label>
+      </div>
+      <div class="field-pair">
+        <label class="field"><span>Vehicle colour</span><span class="input-shell"><input id="parkColor" placeholder="e.g. Black" required /></span></label>
+        <label class="field"><span>Parking type</span><span class="input-shell"><select id="parkType"><option value="regular">Regular</option><option value="vip">VIP</option><option value="accessible">Accessible</option></select></span></label>
+      </div>
+      <div class="modal-note"><span>✦</span><p>The nearest suitable space will be selected automatically.</p></div>
+      <button class="primary-button full-button" type="submit">Assign parking space</button>
+    </form>
+  </section>
+
+  <section id="exitModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="exitModalTitle">
+    <div class="modal-head"><div><p>Vehicle departure</p><h2 id="exitModalTitle">Exit a vehicle</h2></div><button class="modal-close" type="button">×</button></div>
+    <form id="exitForm" class="modal-form">
+      <label class="field"><span>Registration number</span><span class="input-shell"><input id="exitPlate" placeholder="Enter registration number" required /></span></label>
+      <div id="exitPreview" class="exit-preview empty">Enter a registration number to preview the parking details.</div>
+      <button class="primary-button full-button" type="submit">Complete exit and calculate fee</button>
+    </form>
+  </section>
+
+  <section id="searchModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="searchModalTitle">
+    <div class="modal-head"><div><p>Vehicle lookup</p><h2 id="searchModalTitle">Search parking records</h2></div><button class="modal-close" type="button">×</button></div>
+    <form id="searchModalForm" class="modal-form">
+      <label class="field"><span>Registration number</span><span class="input-shell"><input id="searchModalInput" placeholder="Enter registration number" required /></span></label>
+      <button class="primary-button full-button" type="submit">Search vehicle</button>
+      <div id="searchModalResult" class="search-result-card empty">Vehicle details will appear here.</div>
+    </form>
+  </section>
+
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <script>
+(() => {
+  "use strict";
+
+  /* ---------- Utility ---------- */
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+  const STORAGE = {
+    users: "smartpark_users_v2",
+    session: "smartpark_session_v2",
+    tempSession: "smartpark_temp_session_v2",
+    parking: "smartpark_state_v2"
+  };
+  const TOTAL_SLOTS = 12;
+  const RATE_PER_HOUR = 120;
+
+  const nowISO = () => new Date().toISOString();
+  const formatTime = (dateValue) => new Intl.DateTimeFormat("en-PK", { hour: "2-digit", minute: "2-digit" }).format(new Date(dateValue));
+  const formatDateTime = (dateValue) => new Intl.DateTimeFormat("en-PK", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(dateValue));
+  const normalizePlate = (value) => value.trim().toUpperCase().replace(/\s+/g, "-");
+  const escapeHTML = (value) => String(value ?? "").replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
+  const initials = (name) => name.split(/\s+/).filter(Boolean).slice(0,2).map(p => p[0].toUpperCase()).join("") || "SP";
+  const uid = () => `${Date.now().toString(36)}${Math.random().toString(36).slice(2,8)}`;
+
+  // Lightweight local hash used for this offline academic demo.
+  function hashPassword(value) {
+    let h1 = 0xdeadbeef ^ value.length;
+    let h2 = 0x41c6ce57 ^ value.length;
+    for (let i = 0; i < value.length; i++) {
+      const ch = value.charCodeAt(i);
+      h1 = Math.imul(h1 ^ ch, 2654435761);
+      h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+  }
+
+  /* ---------- Data Structures ---------- */
+  class CircularSlotList {
+    constructor() { this.head = null; this.tail = null; this.current = null; this.size = 0; }
+    append(slot) {
+      const node = { value: slot, next: null };
+      if (!this.head) {
+        this.head = node;
+        this.tail = node;
+        node.next = node;
+        this.current = node;
+      } else {
+        node.next = this.head;
+        this.tail.next = node;
+        this.tail = node;
+      }
+      this.size++;
+    }
+    find(id) {
+      if (!this.head) return null;
+      let node = this.head;
+      do { if (node.value.id === id) return node.value; node = node.next; } while (node !== this.head);
+      return null;
+    }
+    findNextAvailable(type = "regular") {
+      if (!this.current) return null;
+      let node = this.current;
+      let inspected = 0;
+      while (inspected < this.size) {
+        const slot = node.value;
+        const compatible = slot.status === "available" && (slot.type === "regular" || slot.type === type);
+        if (compatible) {
+          this.current = node.next;
+          return slot;
+        }
+        node = node.next;
+        inspected++;
+      }
+      return null;
+    }
+    toArray() {
+      const items = [];
+      if (!this.head) return items;
+      let node = this.head;
+      do { items.push(node.value); node = node.next; } while (node !== this.head);
+      return items;
+    }
+  }
+
+  class DoublyLinkedList {
+    constructor() { this.head = null; this.tail = null; this.length = 0; }
+    append(value) {
+      const node = { value, prev: this.tail, next: null };
+      if (!this.head) this.head = node;
+      if (this.tail) this.tail.next = node;
+      this.tail = node;
+      this.length++;
+      return node;
+    }
+    remove(predicate) {
+      let node = this.head;
+      while (node) {
+        if (predicate(node.value)) {
+          if (node.prev) node.prev.next = node.next; else this.head = node.next;
+          if (node.next) node.next.prev = node.prev; else this.tail = node.prev;
+          this.length--;
+          return node.value;
+        }
+        node = node.next;
+      }
+      return null;
+    }
+    find(predicate) {
+      let node = this.head;
+      while (node) { if (predicate(node.value)) return node.value; node = node.next; }
+      return null;
+    }
+    toArray(reverse = false) {
+      const items = [];
+      let node = reverse ? this.tail : this.head;
+      while (node) { items.push(node.value); node = reverse ? node.prev : node.next; }
+      return items;
+    }
+  }
+
+  class Queue {
+    constructor(items = []) { this.items = [...items]; }
+    enqueue(item) { this.items.push(item); }
+    dequeue() { return this.items.shift() || null; }
+    peek() { return this.items[0] || null; }
+    get length() { return this.items.length; }
+    toArray() { return [...this.items]; }
+  }
+
+  class Stack {
+    constructor(items = []) { this.items = [...items]; }
+    push(item) { this.items.push(item); }
+    pop() { return this.items.pop() || null; }
+    peek() { return this.items[this.items.length - 1] || null; }
+    clear() { this.items = []; }
+    toArray() { return [...this.items].reverse(); }
+  }
+
+  class HashTable {
+    constructor(size = 47) { this.size = size; this.buckets = Array.from({ length: size }, () => []); }
+    hash(key) { return [...String(key)].reduce((acc, ch) => (acc * 31 + ch.charCodeAt(0)) % this.size, 0); }
+    set(key, value) {
+      const bucket = this.buckets[this.hash(key)];
+      const match = bucket.find(item => item[0] === key);
+      if (match) match[1] = value; else bucket.push([key, value]);
+    }
+    get(key) { return this.buckets[this.hash(key)].find(item => item[0] === key)?.[1] || null; }
+    delete(key) {
+      const bucket = this.buckets[this.hash(key)];
+      const index = bucket.findIndex(item => item[0] === key);
+      if (index >= 0) bucket.splice(index, 1);
+    }
+  }
+
+  /* ---------- Authentication ---------- */
+  class AuthManager {
+    constructor() { this.seedDefaultUser(); this.bind(); this.restoreSession(); }
+    users() { return JSON.parse(localStorage.getItem(STORAGE.users) || "[]"); }
+    saveUsers(users) { localStorage.setItem(STORAGE.users, JSON.stringify(users)); }
+    seedDefaultUser() {
+      const users = this.users();
+      if (!users.length) {
+        users.push({ id: uid(), firstName: "SmartPark", lastName: "Admin", name: "SmartPark Admin", email: "admin@smartpark.com", passwordHash: hashPassword("Park@123"), createdAt: nowISO() });
+        this.saveUsers(users);
+      }
+    }
+    bind() {
+      $$(".auth-tab").forEach(tab => tab.addEventListener("click", () => this.switchTab(tab.dataset.authTab)));
+      $$('[data-toggle-password]').forEach(button => button.addEventListener("click", () => {
+        const input = document.getElementById(button.dataset.togglePassword);
+        input.type = input.type === "password" ? "text" : "password";
+        button.textContent = input.type === "password" ? "Show" : "Hide";
+      }));
+      $("#loginForm").addEventListener("submit", event => this.login(event));
+      $("#registerForm").addEventListener("submit", event => this.register(event));
+      $("#forgotPassword").addEventListener("click", () => toast("Password help", "Use the demo account from README or create a new account.", "info"));
+    }
+    switchTab(name) {
+      $$(".auth-tab").forEach(t => t.classList.toggle("active", t.dataset.authTab === name));
+      $$(".auth-form").forEach(f => f.classList.toggle("active", f.id === `${name}Form`));
+      $$(".form-message").forEach(m => { m.textContent = ""; m.className = "form-message"; });
+    }
+    validateField(input, condition, message) {
+      const field = input.closest(".field");
+      field?.classList.toggle("has-error", !condition);
+      const error = field?.querySelector(".field-error");
+      if (error) error.textContent = condition ? "" : message;
+      return condition;
+    }
+    login(event) {
+      event.preventDefault();
+      const emailInput = $("#loginEmail");
+      const passwordInput = $("#loginPassword");
+      const message = $("#loginMessage");
+      const email = emailInput.value.trim().toLowerCase();
+      const password = passwordInput.value;
+      const validEmail = this.validateField(emailInput, /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), "Enter a valid email address.");
+      const validPassword = this.validateField(passwordInput, password.length >= 6, "Enter your password.");
+      if (!validEmail || !validPassword) return;
+      const user = this.users().find(item => item.email === email && item.passwordHash === hashPassword(password));
+      if (!user) { message.textContent = "Incorrect email or password."; message.className = "form-message"; return; }
+      const session = JSON.stringify({ userId: user.id, createdAt: nowISO() });
+      if ($("#rememberMe").checked) localStorage.setItem(STORAGE.session, session); else sessionStorage.setItem(STORAGE.tempSession, session);
+      message.textContent = "Signed in successfully."; message.className = "form-message success";
+      setTimeout(() => launchApp(user), 250);
+    }
+    register(event) {
+      event.preventDefault();
+      const first = $("#firstName"), last = $("#lastName"), emailInput = $("#registerEmail"), pass = $("#registerPassword"), confirm = $("#confirmPassword"), message = $("#registerMessage");
+      const email = emailInput.value.trim().toLowerCase();
+      const checks = [
+        this.validateField(first, first.value.trim().length >= 2, "Enter your first name."),
+        this.validateField(last, last.value.trim().length >= 2, "Enter your last name."),
+        this.validateField(emailInput, /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), "Enter a valid email address."),
+        this.validateField(pass, /^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(pass.value), "Use at least 8 characters with a number."),
+        this.validateField(confirm, confirm.value === pass.value && confirm.value.length > 0, "Passwords do not match.")
+      ];
+      if (!checks.every(Boolean)) return;
+      if (!$("#agreeTerms").checked) { message.textContent = "Please accept the account terms."; return; }
+      const users = this.users();
+      if (users.some(user => user.email === email)) { message.textContent = "An account already exists with this email."; return; }
+      const user = { id: uid(), firstName: first.value.trim(), lastName: last.value.trim(), name: `${first.value.trim()} ${last.value.trim()}`, email, passwordHash: hashPassword(pass.value), createdAt: nowISO() };
+      users.push(user); this.saveUsers(users);
+      message.textContent = "Account created. You can sign in now."; message.className = "form-message success";
+      event.target.reset();
+      setTimeout(() => { this.switchTab("login"); $("#loginEmail").value = email; }, 650);
+    }
+    restoreSession() {
+      const raw = localStorage.getItem(STORAGE.session) || sessionStorage.getItem(STORAGE.tempSession);
+      if (!raw) return;
+      try {
+        const session = JSON.parse(raw);
+        const user = this.users().find(item => item.id === session.userId);
+        if (user) launchApp(user);
+      } catch { this.logout(); }
+    }
+    logout() {
+      localStorage.removeItem(STORAGE.session); sessionStorage.removeItem(STORAGE.tempSession);
+      $("#appView").classList.add("hidden"); $("#authView").classList.remove("hidden");
+      $("#loginForm").reset();
+    }
+  }
+
+  /* ---------- Parking App ---------- */
+  class ParkingSystem {
+    constructor(user) {
+      this.user = user;
+      this.slots = new CircularSlotList();
+      this.activeRecords = new DoublyLinkedList();
+      this.allRecords = new DoublyLinkedList();
+      this.waitingQueue = new Queue();
+      this.activityStack = new Stack();
+      this.vehicleIndex = new HashTable();
+      this.revenue = 0;
+      this.load();
+      this.bind();
+      this.renderAll();
+    }
+
+    createDefaultSlots() {
+      const types = ["regular","regular","vip","regular","regular","accessible","regular","regular","vip","regular","regular","accessible"];
+      return Array.from({length:TOTAL_SLOTS}, (_,i) => ({ id:`A${i+1}`, type:types[i], status: types[i] === "vip" && [2,8].includes(i) ? "reserved" : "available", vehiclePlate:null }));
+    }
+
+    load() {
+      const saved = JSON.parse(localStorage.getItem(STORAGE.parking) || "null");
+      const slotData = saved?.slots || this.createDefaultSlots();
+      slotData.forEach(slot => this.slots.append(slot));
+      (saved?.activeRecords || []).forEach(record => { this.activeRecords.append(record); this.allRecords.append(record); this.vehicleIndex.set(record.plate, record); });
+      (saved?.completedRecords || []).forEach(record => this.allRecords.append(record));
+      this.waitingQueue = new Queue(saved?.waitingQueue || []);
+      this.activityStack = new Stack(saved?.activities || this.defaultActivities());
+      this.revenue = saved?.revenue || 0;
+      if (!saved) this.seedVehicles();
+    }
+
+    defaultActivities() {
+      return [{ id:uid(), type:"system", title:"Parking floor ready", description:"All systems are ready for vehicle arrivals.", time:nowISO() }];
+    }
+
+    seedVehicles() {
+      const seeds = [
+        ["ICT-2041","Ayesha Khan","Honda Civic","Black","A1"],
+        ["LEA-7720","Hamza Ali","Toyota Corolla","White","A2"],
+        ["RIP-9155","Sara Ahmed","KIA Sportage","Deep Red","A4"],
+        ["ISB-3802","Bilal Raza","Honda City","Silver","A5"]
+      ];
+      seeds.forEach((item, index) => {
+        const [plate,owner,model,color,slotId] = item;
+        const slot = this.slots.find(slotId); if (!slot) return;
+        slot.status = "occupied"; slot.vehiclePlate = plate;
+        const entry = new Date(Date.now() - (index + 1) * 31 * 60 * 1000).toISOString();
+        const record = { id:uid(), plate, owner, model, color, type:"regular", slotId, entryTime:entry, exitTime:null, status:"active", fee:0 };
+        this.activeRecords.append(record); this.allRecords.append(record); this.vehicleIndex.set(plate, record);
+      });
+      this.activityStack.push({id:uid(),type:"entry",title:"ICT-2041 parked",description:"Assigned to slot A1.",time:new Date(Date.now()-31*60*1000).toISOString()});
+      this.activityStack.push({id:uid(),type:"entry",title:"RIP-9155 parked",description:"Assigned to slot A4.",time:new Date(Date.now()-18*60*1000).toISOString()});
+      this.persist();
+    }
+
+    persist() {
+      const active = this.activeRecords.toArray();
+      const completed = this.allRecords.toArray().filter(r => r.status === "completed");
+      localStorage.setItem(STORAGE.parking, JSON.stringify({ slots:this.slots.toArray(), activeRecords:active, completedRecords:completed, waitingQueue:this.waitingQueue.toArray(), activities:[...this.activityStack.items], revenue:this.revenue }));
+    }
+
+    bind() {
+      $$(".nav-item").forEach(button => button.addEventListener("click", () => this.showSection(button.dataset.section)));
+      $$('[data-section-jump]').forEach(button => button.addEventListener("click", () => this.showSection(button.dataset.sectionJump)));
+      $$('[data-open-modal]').forEach(button => button.addEventListener("click", () => openModal(button.dataset.openModal)));
+      $$(".modal-close").forEach(button => button.addEventListener("click", closeModals));
+      $("#modalBackdrop").addEventListener("click", closeModals);
+      $("#parkForm").addEventListener("submit", event => this.parkVehicle(event));
+      $("#exitForm").addEventListener("submit", event => this.exitVehicle(event));
+      $("#exitPlate").addEventListener("input", () => this.previewExit());
+      $("#quickSearchForm").addEventListener("submit", event => this.quickSearch(event));
+      $("#searchModalForm").addEventListener("submit", event => this.modalSearch(event));
+      $("#globalSearchButton").addEventListener("click", () => openModal("searchModal"));
+      $("#recordsSearch").addEventListener("input", () => this.renderRecords());
+      $("#recordsFilter").addEventListener("change", () => this.renderRecords());
+      $("#clearActivity").addEventListener("click", () => { this.activityStack.clear(); this.persist(); this.renderActivity(); });
+      $("#downloadReport").addEventListener("click", () => this.downloadCSV());
+      $("#logoutButton").addEventListener("click", () => auth.logout());
+      $("#profileLogout").addEventListener("click", () => auth.logout());
+      $("#profileButton").addEventListener("click", () => $("#profileMenu").classList.toggle("hidden"));
+      $("#menuButton").addEventListener("click", () => $(".sidebar").classList.toggle("open"));
+      document.addEventListener("keydown", event => { if (event.key === "Escape") closeModals(); });
+    }
+
+    showSection(name) {
+      $$(".content-section").forEach(section => section.classList.toggle("active", section.id === `${name}Section`));
+      $$(".nav-item").forEach(button => button.classList.toggle("active", button.dataset.section === name));
+      const titles = {dashboard:"Parking overview",parking:"Live parking map",records:"Vehicle records",queue:"Waiting queue",reports:"Activity history"};
+      $("#sectionTitle").textContent = titles[name] || "SmartPark";
+      $(".sidebar").classList.remove("open");
+      if (name === "parking") this.renderParkingLarge();
+      if (name === "records") this.renderRecords();
+      if (name === "queue") this.renderQueue();
+      if (name === "reports") this.renderHistory();
+    }
+
+    addActivity(type, title, description) {
+      this.activityStack.push({ id:uid(), type, title, description, time:nowISO() });
+    }
+
+    async parkVehicle(event) {
+      event.preventDefault();
+      const plate = normalizePlate($("#parkPlate").value);
+      const owner = $("#parkOwner").value.trim();
+      const model = $("#parkModel").value.trim();
+      const color = $("#parkColor").value.trim();
+      const type = $("#parkType").value;
+      if (!plate || !owner || !model || !color) return toast("Missing information", "Please complete all vehicle details.", "error");
+      if (this.vehicleIndex.get(plate) || this.waitingQueue.toArray().some(v => v.plate === plate)) return toast("Vehicle already exists", `${plate} is already parked or waiting.`, "error");
+      const vehicle = { plate, owner, model, color, type, requestedAt:nowISO() };
+      const slot = this.slots.findNextAvailable(type);
+      closeModals();
+      if (!slot) {
+        this.waitingQueue.enqueue(vehicle);
+        this.addActivity("queue", `${plate} joined the queue`, "No suitable slot was available.");
+        toast("Added to waiting queue", `${plate} is number ${this.waitingQueue.length} in line.`, "info");
+        this.persist(); this.renderAll(); event.target.reset(); return;
+      }
+      await this.animateCarToSlot(slot.id, color);
+      slot.status = "occupied"; slot.vehiclePlate = plate;
+      const record = { id:uid(), plate, owner, model, color, type, slotId:slot.id, entryTime:nowISO(), exitTime:null, status:"active", fee:0 };
+      this.activeRecords.append(record); this.allRecords.append(record); this.vehicleIndex.set(plate, record);
+      this.addActivity("entry", `${plate} parked`, `Automatically assigned to slot ${slot.id}.`);
+      this.persist(); this.renderAll(); event.target.reset();
+      toast("Parking confirmed", `${plate} has been assigned to ${slot.id}.`, "success");
+    }
+
+    calculateFee(entry, exit = new Date()) {
+      const minutes = Math.max(1, Math.ceil((new Date(exit) - new Date(entry)) / 60000));
+      const hours = Math.max(1, Math.ceil(minutes / 60));
+      return { minutes, hours, fee:hours * RATE_PER_HOUR };
+    }
+
+    previewExit() {
+      const plate = normalizePlate($("#exitPlate").value);
+      const record = this.vehicleIndex.get(plate);
+      const preview = $("#exitPreview");
+      if (!record) { preview.className = "exit-preview empty"; preview.textContent = plate ? "No active vehicle found with this registration number." : "Enter a registration number to preview the parking details."; return; }
+      const pricing = this.calculateFee(record.entryTime);
+      preview.className = "exit-preview";
+      preview.innerHTML = `<div class="exit-grid"><div><small>Owner</small><strong>${escapeHTML(record.owner)}</strong></div><div><small>Parking slot</small><strong>${record.slotId}</strong></div><div><small>Entry time</small><strong>${formatTime(record.entryTime)}</strong></div><div><small>Estimated fee</small><strong>Rs ${pricing.fee}</strong></div></div>`;
+    }
+
+    async exitVehicle(event) {
+      event.preventDefault();
+      const plate = normalizePlate($("#exitPlate").value);
+      const record = this.vehicleIndex.get(plate);
+      if (!record) return toast("Vehicle not found", "No active vehicle matches this registration number.", "error");
+      const slot = this.slots.find(record.slotId);
+      closeModals();
+      await this.animateCarFromSlot(record.slotId, record.color);
+      const completed = this.activeRecords.remove(item => item.plate === plate);
+      if (!completed) return;
+      const pricing = this.calculateFee(completed.entryTime);
+      completed.exitTime = nowISO(); completed.status = "completed"; completed.fee = pricing.fee;
+      this.vehicleIndex.delete(plate);
+      if (slot) { slot.status = slot.type === "vip" ? "reserved" : "available"; slot.vehiclePlate = null; }
+      this.revenue += pricing.fee;
+      this.addActivity("exit", `${plate} exited`, `Fee Rs ${pricing.fee} collected from slot ${completed.slotId}.`);
+      this.persist(); this.renderAll(); event.target.reset(); this.previewExit();
+      toast("Exit completed", `${plate} left successfully. Fee: Rs ${pricing.fee}.`, "success");
+      await this.assignWaitingVehicle();
+    }
+
+    async assignWaitingVehicle() {
+      if (!this.waitingQueue.length) return;
+      const waiting = this.waitingQueue.peek();
+      const slot = this.slots.findNextAvailable(waiting.type);
+      if (!slot) return;
+      const vehicle = this.waitingQueue.dequeue();
+      await this.animateCarToSlot(slot.id, vehicle.color);
+      slot.status = "occupied"; slot.vehiclePlate = vehicle.plate;
+      const record = { id:uid(), ...vehicle, slotId:slot.id, entryTime:nowISO(), exitTime:null, status:"active", fee:0 };
+      delete record.requestedAt;
+      this.activeRecords.append(record); this.allRecords.append(record); this.vehicleIndex.set(record.plate, record);
+      this.addActivity("entry", `${record.plate} parked from queue`, `Assigned to newly available slot ${slot.id}.`);
+      this.persist(); this.renderAll();
+      toast("Queue advanced", `${record.plate} has been assigned to ${slot.id}.`, "success");
+    }
+
+    quickSearch(event) { event.preventDefault(); this.renderSearchResult($("#quickSearchInput").value, $("#quickSearchResult")); }
+    modalSearch(event) { event.preventDefault(); this.renderSearchResult($("#searchModalInput").value, $("#searchModalResult")); }
+    renderSearchResult(value, target) {
+      const plate = normalizePlate(value);
+      const record = this.vehicleIndex.get(plate) || this.allRecords.toArray(true).find(r => r.plate === plate);
+      if (!record) { target.className = target.id === "quickSearchResult" ? "quick-search-result empty" : "search-result-card empty"; target.textContent = "No vehicle record found."; return; }
+      target.className = target.id === "quickSearchResult" ? "quick-search-result" : "search-result-card";
+      target.innerHTML = `<div class="vehicle-result"><div><small>Registration</small><strong>${record.plate}</strong></div><div><small>Owner</small><strong>${escapeHTML(record.owner)}</strong></div><div><small>Slot</small><strong>${record.slotId || "—"}</strong></div><div><small>Status</small><strong>${record.status === "active" ? "Currently parked" : "Completed"}</strong></div><div><small>Entry</small><strong>${formatDateTime(record.entryTime)}</strong></div><div><small>Fee</small><strong>${record.fee ? `Rs ${record.fee}` : "Pending"}</strong></div></div>`;
+    }
+
+    async animateCarToSlot(slotId, color) { await this.animateCar(slotId, false, color); }
+    async animateCarFromSlot(slotId, color) { await this.animateCar(slotId, true, color); }
+    animateCar(slotId, reverse = false, color = "black") {
+      return new Promise(resolve => {
+        const lot = $("#parkingLot");
+        const car = $("#animatedCar");
+        const slotEl = lot.querySelector(`[data-slot-id="${slotId}"]`);
+        if (!slotEl) return resolve();
+        const lotRect = lot.getBoundingClientRect();
+        const slotRect = slotEl.getBoundingClientRect();
+        const start = { x:12, y:lotRect.height - 108 };
+        const end = { x:slotRect.left - lotRect.left + slotRect.width/2 - 26, y:slotRect.top - lotRect.top + slotRect.height/2 - 47 };
+        const mid = { x:(start.x+end.x)*.48, y:lotRect.height - 130 };
+        const keyframes = [
+          { transform:`translate(${start.x}px,${start.y}px) rotate(90deg)`, opacity:1 },
+          { transform:`translate(${mid.x}px,${mid.y}px) rotate(90deg)`, opacity:1, offset:.52 },
+          { transform:`translate(${end.x}px,${end.y}px) rotate(0deg)`, opacity:1 },
+          { transform:`translate(${end.x}px,${end.y}px) rotate(0deg)`, opacity:0 }
+        ];
+        car.querySelector(".car-body").style.setProperty("--carColor", colorToCSS(color));
+        const animation = car.animate(reverse ? [...keyframes].reverse() : keyframes, { duration:2200, easing:"cubic-bezier(.45,.03,.18,.98)", fill:"forwards" });
+        animation.onfinish = () => { car.style.opacity = 0; resolve(); };
+      });
+    }
+
+    renderAll() {
+      this.renderProfile(); this.renderMetrics(); this.renderParking(); this.renderParkingLarge(); this.renderActivity(); this.renderQueue(); this.renderRecords(); this.renderHistory();
+    }
+    renderProfile() {
+      $("#profileName").textContent = this.user.name;
+      $("#profileInitials").textContent = initials(this.user.name);
+      $("#profileMenuName").textContent = this.user.name;
+      $("#profileMenuEmail").textContent = this.user.email;
+      $("#todayDate").textContent = new Intl.DateTimeFormat("en-PK", { weekday:"long", day:"numeric", month:"long" }).format(new Date());
+    }
+    renderMetrics() {
+      const slots = this.slots.toArray();
+      const occupied = slots.filter(s => s.status === "occupied").length;
+      const available = slots.filter(s => s.status === "available").length;
+      const percent = Math.round((occupied / TOTAL_SLOTS) * 100);
+      $("#availableCount").textContent = available;
+      $("#occupiedCount").textContent = occupied;
+      $("#queueCount").textContent = this.waitingQueue.length;
+      $("#revenueCount").textContent = `Rs ${this.revenue.toLocaleString()}`;
+      $("#occupancyLabel").textContent = `${percent}% occupancy`;
+      $("#sidebarAvailable").textContent = available;
+      $("#sidebarQueue").textContent = this.waitingQueue.length;
+      $("#capacityPercent").textContent = `${percent}%`;
+      $("#capacityText").textContent = `${occupied} of ${TOTAL_SLOTS} occupied`;
+      $(".capacity-ring").style.setProperty("--capacity", `${percent}%`);
+    }
+    renderSlots(container) {
+      container.innerHTML = this.slots.toArray().map(slot => {
+        const record = slot.vehiclePlate ? this.vehicleIndex.get(slot.vehiclePlate) : null;
+        return `<div class="parking-slot ${slot.status}" data-slot-id="${slot.id}" title="${slot.status === "occupied" ? `${slot.vehiclePlate} • ${record?.owner || ""}` : `${slot.type} slot`}"><span class="slot-label">${slot.id}${slot.type !== "regular" ? ` • ${slot.type.toUpperCase()}` : ""}</span>${slot.status === "occupied" ? `<div class="slot-car" style="--carColor:${colorToCSS(record?.color)}"><span>${slot.vehiclePlate}</span></div>` : ""}</div>`;
+      }).join("");
+    }
+    renderParking() { this.renderSlots($("#slotsGrid")); }
+    renderParkingLarge() { this.renderSlots($("#slotsGridLarge")); }
+    renderActivity() {
+      const items = this.activityStack.toArray().slice(0,8);
+      $("#activityList").innerHTML = items.length ? items.map(item => `<article class="activity-item"><div class="activity-symbol">${activityIcon(item.type)}</div><div><strong>${escapeHTML(item.title)}</strong><p>${escapeHTML(item.description)}</p></div><time>${formatTime(item.time)}</time></article>`).join("") : `<div class="empty-state">No recent activity.</div>`;
+    }
+    renderQueue() {
+      const items = this.waitingQueue.toArray();
+      $("#queuePreview").innerHTML = items.length ? items.slice(0,3).map((item,index) => `<div class="queue-row"><div class="queue-number">${index+1}</div><div><strong>${item.plate}</strong><span>${escapeHTML(item.owner)} • ${escapeHTML(item.model)}</span></div><time>${formatTime(item.requestedAt)}</time></div>`).join("") : `<div class="empty-state">No vehicles are waiting.</div>`;
+      $("#queueFullList").innerHTML = items.length ? items.map((item,index) => `<article class="queue-card"><div class="queue-number">${index+1}</div><div><h4>${item.plate}</h4><p>${escapeHTML(item.owner)} • ${escapeHTML(item.model)} • ${escapeHTML(item.color)}</p></div><time>${formatDateTime(item.requestedAt)}</time></article>`).join("") : `<div class="queue-empty"><div class="queue-empty-icon">↗</div><h3>No vehicles are waiting</h3><p>The parking floor is not empty. Open Dashboard or Live Parking to view the parked cars. This page only shows cars waiting when every suitable slot is full.</p></div>`;
+    }
+    renderRecords() {
+      const query = ($("#recordsSearch")?.value || "").toLowerCase();
+      const filter = $("#recordsFilter")?.value || "all";
+      let records = this.allRecords.toArray(true);
+      records = records.filter(r => (filter === "all" || (filter === "active" && r.status === "active") || (filter === "completed" && r.status === "completed")) && (!query || r.plate.toLowerCase().includes(query) || r.owner.toLowerCase().includes(query)));
+      $("#recordsTableBody").innerHTML = records.length ? records.map(r => `<tr><td><div class="table-vehicle"><span class="table-car-icon">◆</span><div><strong>${r.plate}</strong><br><small>${escapeHTML(r.model)}</small></div></div></td><td>${escapeHTML(r.owner)}</td><td>${r.slotId || "—"}</td><td>${formatDateTime(r.entryTime)}</td><td><span class="status-pill ${r.status}">${r.status === "active" ? "Parked" : "Completed"}</span></td><td>${r.fee ? `Rs ${r.fee}` : "Pending"}</td><td><button class="row-action" data-search-plate="${r.plate}">View</button></td></tr>`).join("") : `<tr><td colspan="7"><div class="empty-state">No matching records found.</div></td></tr>`;
+      $$('[data-search-plate]').forEach(button => button.addEventListener("click", () => { openModal("searchModal"); $("#searchModalInput").value = button.dataset.searchPlate; this.renderSearchResult(button.dataset.searchPlate,$("#searchModalResult")); }));
+    }
+    renderHistory() {
+      const items = this.activityStack.toArray();
+      $("#historyTimeline").innerHTML = items.length ? items.map(item => `<article class="history-entry"><time>${formatDateTime(item.time)}</time><div class="timeline-mark"><i></i></div><div><h4>${escapeHTML(item.title)}</h4><p>${escapeHTML(item.description)}</p></div></article>`).join("") : `<div class="empty-state">No activity history is available.</div>`;
+    }
+    downloadCSV() {
+      const records = this.allRecords.toArray();
+      const rows = [["Registration","Owner","Model","Slot","Entry","Exit","Status","Fee"], ...records.map(r => [r.plate,r.owner,r.model,r.slotId,formatDateTime(r.entryTime),r.exitTime ? formatDateTime(r.exitTime) : "",r.status,r.fee])];
+      const csv = rows.map(row => row.map(value => `"${String(value).replace(/"/g,'""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], {type:"text/csv"});
+      const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "smartpark-records.csv"; link.click(); URL.revokeObjectURL(link.href);
+    }
+  }
+
+  function colorToCSS(color = "black") {
+    const map = { black:"#343640", white:"#d9d9de", silver:"#8c919b", red:"#b3182c", blue:"#224d9c", grey:"#686b74", gray:"#686b74", green:"#2f7647" };
+    const key = color.toLowerCase();
+    return Object.entries(map).find(([name]) => key.includes(name))?.[1] || "#4a4d56";
+  }
+  function activityIcon(type) { return ({entry:"↘",exit:"↗",queue:"⌛",system:"✓"})[type] || "•"; }
+
+  function openModal(id) { $("#modalBackdrop").classList.remove("hidden"); $(`#${id}`).classList.remove("hidden"); if(id==="exitModal") $("#exitPlate").focus(); }
+  function closeModals() { $("#modalBackdrop").classList.add("hidden"); $$(".modal").forEach(modal => modal.classList.add("hidden")); }
+  function toast(title, message, type = "info") {
+    const item = document.createElement("div"); item.className = `toast ${type}`;
+    item.innerHTML = `<div class="toast-icon">${type === "success" ? "✓" : type === "error" ? "!" : "i"}</div><div><strong>${escapeHTML(title)}</strong><p>${escapeHTML(message)}</p></div><button aria-label="Close">×</button>`;
+    $("#toastContainer").appendChild(item);
+    const close = () => item.remove(); item.querySelector("button").addEventListener("click", close); setTimeout(close, 4800);
+  }
+
+  let app = null;
+  function launchApp(user) {
+    $("#authView").classList.add("hidden"); $("#appView").classList.remove("hidden");
+    if (!app || app.user.id !== user.id) app = new ParkingSystem(user); else app.renderAll();
+  }
+
+  const auth = new AuthManager();
+})();
+
+</script>
 </body>
-<script src="script.js"></script>
 </html>
